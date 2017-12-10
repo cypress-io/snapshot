@@ -17,6 +17,81 @@ npm install --save-dev @cypress/snapshot
 
 ## Use
 
+After installing, add the following to your `cypress/support/commands.js` file
+
+```js
+require('@cypress/snapshot')()
+```
+
+This registers a new command to create new snapshot or compare value to old snapshot
+
+```js
+describe('my tests', () => {
+  it('works', () => {
+    cy.log('first snapshot')
+    cy.wrap({ foo: 42 }).snapshot()
+    cy.log('second snapshot')
+    cy.wrap({ bar: 101 }).snapshot()
+  })
+})
+
+describe('focused input field', () => {
+  it('is empty and then typed into', () => {
+    cy.visit('http://todomvc.com/examples/react/')
+    cy
+      .focused()
+      .snapshot('initial')
+      .type('eat healthy breakfast')
+      .snapshot('after typing')
+  })
+})
+```
+
+The snapshot object can be found in file `snapshots.js`. In the above case it would look something like this
+
+```js
+module.exports = {
+  "focused input field": {
+    "is empty and then typed into": {
+      "initial": {
+        "tagName": "input",
+        "attributes": {
+          "class": "new-todo",
+          "placeholder": "What needs to be done?",
+          "value": ""
+        }
+      },
+      "after typing": {
+        "tagName": "input",
+        "attributes": {
+          "class": "new-todo",
+          "placeholder": "What needs to be done?",
+          "value": "eat healthy breakfast"
+        }
+      }
+    }
+  },
+  "my tests": {
+    "works": {
+      "1": {
+        "foo": 42
+      },
+      "2": {
+        "bar": 101
+      }
+    }
+  }
+}
+```
+
+If you change the site values, the saved snapshot will no longer match, throwing an error
+
+![Snapshot mismatch](img/snapshot-mismatch.png)
+
+## Debugging
+
+To debug this module run with environment variable `DEBUG=@cypress/snapshot`
+
 ### Small print
 
 Author: Gleb Bahmutov &lt;gleb@cypress.io&gt; &copy; 2017

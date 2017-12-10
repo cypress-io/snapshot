@@ -14,6 +14,8 @@ function registerCypressSnapshot () {
   la(is.fn(global.after), 'missing global after function')
   la(is.object(global.Cypress), 'missing Cypress object')
 
+  console.log('registering @cypress/snapshot')
+
   let storeSnapshot
 
   // for each full test name, keeps number of snapshots
@@ -38,10 +40,8 @@ function registerCypressSnapshot () {
   function evaluateLoadedSnapShots (js) {
     la(is.string(js), 'expected JavaScript snapshot source', js)
     console.log('read snapshots.js file')
-    console.log(js)
     const store = eval(js) || {}
-    console.log('store')
-    console.log(store)
+    console.log('have %d snapshot(s)', Object.keys(store).length)
     storeSnapshot = initStore(store)
   }
 

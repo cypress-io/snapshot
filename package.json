@@ -29,6 +29,7 @@
     "node": ">=6"
   },
   "files": [
+    "img",
     "src/*.js",
     "!src/*-spec.js"
   ],
@@ -61,13 +62,15 @@
     "size": "t=\"$(npm pack .)\"; wc -c \"${t}\"; tar tvf \"${t}\"; rm \"${t}\";",
     "test": "npm run unit",
     "unit": "mocha src/*-spec.js",
-    "unused-deps": "dependency-check --unused --no-dev ."
+    "unused-deps": "dependency-check --unused --no-dev . --entry src/add-initial-snapshot-file.js",
+    "postinstall": "node src/add-initial-snapshot-file.js"
   },
   "release": {
     "analyzeCommits": "simple-commit-message"
   },
   "devDependencies": {
     "ban-sensitive-files": "1.9.2",
+    "debug": "3.1.0",
     "dependency-check": "2.9.1",
     "deps-ok": "1.2.1",
     "eslint": "4.13.0",
@@ -80,6 +83,7 @@
   },
   "dependencies": {
     "@wildpeaks/snapshot-dom": "1.2.1",
+    "am-i-a-dependency": "1.1.2",
     "check-more-types": "2.24.0",
     "its-name": "1.0.0",
     "lazy-ass": "1.6.0",
