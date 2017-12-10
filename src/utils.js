@@ -1,5 +1,6 @@
 /* global Cypress */
 const sd = require('@wildpeaks/snapshot-dom')
+const beautify = require('js-beautify').html
 
 function isJqueryElement (x) {
   return 'wrap' in x
@@ -21,23 +22,29 @@ function serializeDomElement ($el) {
   return json
 }
 
-const stripReactIdAttributes = html => {
+const stripReactIdAttributes = (html) => {
   const dataReactId = /data\-reactid="[\.\d\$\-abcdfef]+"/g
   return html.replace(dataReactId, '')
 }
 
-const serializeReactToHTML = el$ => {
-  debugger
+const serializeReactToHTML = (el$) => {
   const html = el$[0].outerHTML
   const stripped = stripReactIdAttributes(html)
-  return stripped
+  const options = {
+    wrap_line_length: 80,
+    indent_inner_html: true,
+    indent_size: 2,
+    wrap_attributes: 'force'
+  }
+  const pretty = beautify(stripped, options)
+  return pretty
 }
 
-const identity = x => x
+const identity = (x) => x
 
-const publicProps = name => !name.startsWith('__')
+const publicProps = (name) => !name.startsWith('__')
 
-const countSnapshots = snapshots =>
+const countSnapshots = (snapshots) =>
   Object.keys(snapshots).filter(publicProps).length
 
 module.exports = {

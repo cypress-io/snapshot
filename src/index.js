@@ -6,7 +6,7 @@ const { initStore } = require('snap-shot-store')
 const la = require('lazy-ass')
 const is = require('check-more-types')
 const {
-  serializeDomElement,
+  isJqueryElement,
   serializeReactToHTML,
   identity,
   countSnapshots
@@ -113,10 +113,6 @@ function registerCypressSnapshot () {
     [isJqueryElement]: serializeReactToHTML,
     default: identity
   })
-
-  function isJqueryElement (x) {
-    return 'wrap' in x
-  }
 
   function snapshot (value, humanName) {
     console.log('human name', humanName)
