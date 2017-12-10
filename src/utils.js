@@ -1,3 +1,4 @@
+/* global Cypress */
 const sd = require('@wildpeaks/snapshot-dom')
 
 // converts DOM element to a JSON object
@@ -16,6 +17,18 @@ function serializeDomElement ($el) {
   return json
 }
 
+const stripAttribute = (attribute) => (el$) => {
+  el$.removeAttr(attribute)
+  el$.children().each(stripAttribute(attribute))
+  return el$
+}
+
+const serializeReactToHTML = (el$) => {
+  const copy$ = Cypress.$(el$.outerHTML)
+  const removedReactId = stripAttribute('data-reactid')(copy$)
+  return removedReactId.html()
+}
+
 const identity = (x) => x
 
 const publicProps = (name) => !name.startsWith('__')
@@ -26,6 +39,8 @@ const countSnapshots = (snapshots) =>
 module.exports = {
   SNAPSHOT_FILE_NAME: 'snapshots.js',
   serializeDomElement,
+  serializeReactToHTML,
   identity,
-  countSnapshots
+  countSnapshots,
+  stripAttribute
 }

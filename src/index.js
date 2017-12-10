@@ -5,7 +5,12 @@ const itsName = require('its-name')
 const { initStore } = require('snap-shot-store')
 const la = require('lazy-ass')
 const is = require('check-more-types')
-const { serializeDomElement, identity, countSnapshots } = require('./utils')
+const {
+  serializeDomElement,
+  serializeReactToHTML,
+  identity,
+  countSnapshots
+} = require('./utils')
 const switchcase = require('switchcase')
 /* eslint-disable no-console */
 
@@ -104,7 +109,8 @@ function registerCypressSnapshot () {
   }
 
   const pickSerializer = switchcase({
-    [isJqueryElement]: serializeDomElement,
+    // [isJqueryElement]: serializeDomElement,
+    [isJqueryElement]: serializeReactToHTML,
     default: identity
   })
 

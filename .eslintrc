@@ -3,7 +3,8 @@
     "plugin:cypress-dev/general"
   ],
   "rules": {
-    "comma-dangle": ["off"]
+    "comma-dangle": "off",
+    "no-debugger": "warn"
   },
   "env": {
     "node": true
