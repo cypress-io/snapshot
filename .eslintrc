@@ -1,5 +1,11 @@
 {
   "extends": [
     "plugin:cypress-dev/general"
-  ]
+  ],
+  "rules": {
+    "comma-dangle": ["off"]
+  },
+  "env": {
+    "node": true
+  }
 }
