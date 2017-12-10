@@ -47,7 +47,9 @@ function registerCypressSnapshot () {
 
   global.before(() => {
     cy.log('before all tests')
-    cy.readFile(SNAPSHOT_FILENAME, 'utf-8').then(evaluateLoadedSnapShots)
+    cy
+      .readFile(SNAPSHOT_FILENAME, 'utf-8', { log: false })
+      .then(evaluateLoadedSnapShots)
     // no way to catch an error yet
   })
 
@@ -145,7 +147,7 @@ function registerCypressSnapshot () {
       snapshots.__version = Cypress.version
       const s = JSON.stringify(snapshots, null, 2)
       const str = `module.exports = ${s}\n`
-      cy.writeFile(SNAPSHOT_FILENAME, str, 'utf-8')
+      cy.writeFile(SNAPSHOT_FILENAME, str, 'utf-8', { log: false })
     }
   })
 }
