@@ -1,0 +1,85 @@
+{
+  "name": "@cypress/snapshot",
+  "description": "Adds value / object / DOM element snapshot testing support to Cypress test runner",
+  "version": "1.0.0",
+  "author": "Gleb Bahmutov <gleb@cypress.io>",
+  "bugs": "https://github.com/cypress-io/snapshot/issues",
+  "config": {
+    "pre-git": {
+      "commit-msg": "simple",
+      "pre-commit": [
+        "npm prune",
+        "npm run deps",
+        "npm test",
+        "git add src/*.js",
+        "npm run ban"
+      ],
+      "pre-push": [
+        "npm run unused-deps",
+        "npm run secure",
+        "npm run license",
+        "npm run ban -- --all",
+        "npm run size"
+      ],
+      "post-commit": [],
+      "post-merge": []
+    }
+  },
+  "engines": {
+    "node": ">=6"
+  },
+  "files": [
+    "src/*.js",
+    "!src/*-spec.js"
+  ],
+  "homepage": "https://github.com/cypress-io/snapshot#readme",
+  "keywords": [
+    "cypress",
+    "cypress-io",
+    "plugin",
+    "snapshot",
+    "testing"
+  ],
+  "license": "MIT",
+  "main": "src/",
+  "private": false,
+  "publishConfig": {
+    "registry": "http://registry.npmjs.org/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cypress-io/snapshot.git"
+  },
+  "scripts": {
+    "ban": "ban",
+    "deps": "deps-ok && dependency-check --no-dev .",
+    "issues": "git-issues",
+    "license": "license-checker --production --onlyunknown --csv",
+    "lint": "eslint --fix src/*.js",
+    "pretest": "npm run lint",
+    "secure": "nsp check",
+    "size": "t=\"$(npm pack .)\"; wc -c \"${t}\"; tar tvf \"${t}\"; rm \"${t}\";",
+    "test": "npm run unit",
+    "unit": "mocha src/*-spec.js",
+    "unused-deps": "dependency-check --unused --no-dev ."
+  },
+  "release": {
+    "analyzeCommits": "simple-commit-message"
+  },
+  "devDependencies": {
+    "ban-sensitive-files": "1.9.2",
+    "dependency-check": "2.9.1",
+    "deps-ok": "1.2.1",
+    "eslint": "4.13.0",
+    "eslint-plugin-cypress-dev": "1.1.2",
+    "git-issues": "1.3.1",
+    "license-checker": "15.0.0",
+    "mocha": "4.0.1",
+    "nsp": "3.1.0",
+    "pre-git": "3.16.0"
+  },
+  "dependencies": {
+    "check-more-types": "2.24.0",
+    "lazy-ass": "1.6.0"
+  }
+}
