@@ -1,12 +1,12 @@
 'use strict'
 
 /* global cy, Cypress */
-const sd = require('@wildpeaks/snapshot-dom')
 const itsName = require('its-name')
 const { initStore } = require('snap-shot-store')
 const la = require('lazy-ass')
 const is = require('check-more-types')
-
+const { serializeDomElement, identity, countSnapshots } = require('./utils')
+const switchcase = require('switchcase')
 /* eslint-disable no-console */
 
 function registerCypressSnapshot () {
@@ -41,15 +41,15 @@ function registerCypressSnapshot () {
     la(is.string(js), 'expected JavaScript snapshot source', js)
     console.log('read snapshots.js file')
     const store = eval(js) || {}
-    console.log('have %d snapshot(s)', Object.keys(store).length)
+    console.log('have %d snapshot(s)', countSnapshots(store))
     storeSnapshot = initStore(store)
   }
 
   global.before(() => {
     cy.log('before all tests')
     cy
-      .readFile(SNAPSHOT_FILENAME, 'utf-8', { log: false })
-      .then(evaluateLoadedSnapShots)
+    .readFile(SNAPSHOT_FILENAME, 'utf-8', { log: false })
+    .then(evaluateLoadedSnapShots)
     // no way to catch an error yet
   })
 
@@ -103,22 +103,10 @@ function registerCypressSnapshot () {
     })
   }
 
-  function snapshot$ (test, $el, humanName) {
-    console.log('snapshot value!', $el)
-    const json = sd.toJSON($el.context)
-    // remove React id, too transient
-    delete json.attributes['data-reactid']
-    console.log('as json', json)
-
-    // hmm, why is value not serialized?
-    if ($el.context.value && !json.attributes.value) {
-      json.attributes.value = $el.context.value
-    }
-
-    const name = getSnapshotName(test, humanName)
-    setSnapshot(name, json, $el, humanName)
-    return $el
-  }
+  const pickSerializer = switchcase({
+    [isJqueryElement]: serializeDomElement,
+    default: identity
+  })
 
   function isJqueryElement (x) {
     return 'wrap' in x
@@ -126,11 +114,11 @@ function registerCypressSnapshot () {
 
   function snapshot (value, humanName) {
     console.log('human name', humanName)
-    if (isJqueryElement(value)) {
-      snapshot$(this.test, value, humanName)
-    } else {
-      setSnapshot(getSnapshotName(this.test, humanName), value, humanName)
-    }
+    const snapshotName = getSnapshotName(this.test, humanName)
+    const serializer = pickSerializer(value)
+    const serialized = serializer(value)
+    setSnapshot(snapshotName, serialized, value, humanName)
+
     // always just pass value
     return value
   }
@@ -141,7 +129,7 @@ function registerCypressSnapshot () {
     if (storeSnapshot) {
       cy.log('saving snapshots')
       const snapshots = storeSnapshot()
-      console.log('snapshots on finish')
+      console.log('%d snapshot(s) on finish', countSnapshots(snapshots))
       console.log(snapshots)
 
       snapshots.__version = Cypress.version
