@@ -2,11 +2,7 @@ const sd = require('@wildpeaks/snapshot-dom')
 const beautify = require('js-beautify').html
 
 function isJqueryElement (x) {
-  // had to work around "switchcase" bug
-  function isObject (x) {
-    return x instanceof Object
-  }
-  return x && isObject(x) && 'wrap' in x
+  return x && typeof x !== 'string' && 'wrap' in x
 }
 
 // converts DOM element to a JSON object
