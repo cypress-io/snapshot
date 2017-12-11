@@ -1,9 +1,12 @@
-/* global Cypress */
 const sd = require('@wildpeaks/snapshot-dom')
 const beautify = require('js-beautify').html
 
 function isJqueryElement (x) {
-  return 'wrap' in x
+  // had to work around "switchcase" bug
+  function isObject (x) {
+    return x instanceof Object
+  }
+  return x && isObject(x) && 'wrap' in x
 }
 
 // converts DOM element to a JSON object

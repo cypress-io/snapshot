@@ -5,14 +5,23 @@ const itsName = require('its-name')
 const { initStore } = require('snap-shot-store')
 const la = require('lazy-ass')
 const is = require('check-more-types')
+const switchcase = require('switchcase')
+const compare = require('snap-shot-compare')
+
 const {
   isJqueryElement,
   serializeReactToHTML,
   identity,
   countSnapshots
 } = require('./utils')
-const switchcase = require('switchcase')
+
 /* eslint-disable no-console */
+
+function compareValues ({ expected, value }) {
+  const noColor = true
+  const json = true
+  return compare({ expected, value, noColor, json })
+}
 
 function registerCypressSnapshot () {
   la(is.fn(global.before), 'missing global before function')
@@ -82,29 +91,47 @@ function registerCypressSnapshot () {
     const message = Cypress._.last(name)
     console.log('current snapshot name', name)
 
+    const devToolsLog = {
+      value
+    }
+    if (isJqueryElement($el)) {
+      // only add DOM elements, otherwise "expected" value is enough
+      devToolsLog.$el = $el
+    }
+
     const options = {
       name: 'snapshot',
       message,
-      consoleProps: () => {
-        const devToolsLog = {
-          value,
-          snapshot: message
-        }
-        if ($el) {
-          devToolsLog.$el = $el
-        }
-        return devToolsLog
-      }
+      consoleProps: () => devToolsLog
     }
 
     if ($el) {
       options.$el = $el
     }
 
+    const cyRaiser = ({ value, expected }) => {
+      const result = compareValues({ expected, value })
+      result.orElse((json) => {
+        // by deleting property and adding it at the last position
+        // we reorder how the object is displayed
+        // We want convenient:
+        //   - message
+        //   - expected
+        //   - value
+        devToolsLog.message = json.message
+        devToolsLog.expected = expected
+        delete devToolsLog.value
+        devToolsLog.value = value
+        throw new Error(`Snapshot difference\n${json.message}`)
+      })
+    }
+
     Cypress.log(options)
     storeSnapshot({
       value,
-      name
+      name,
+      // compare: compareValues,
+      raiser: cyRaiser
     })
   }
 
