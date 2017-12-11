@@ -8,9 +8,7 @@ function isJqueryElement (x) {
 // converts DOM element to a JSON object
 function serializeDomElement ($el) {
   // console.log('snapshot value!', $el)
-  const json = sd.toJSON($el.context)
-  // remove React id, too transient
-  delete json.attributes['data-reactid']
+  const json = sd.toJSON($el[0])
   // console.log('as json', json)
 
   // hmm, why is value not serialized?
@@ -18,6 +16,18 @@ function serializeDomElement ($el) {
     json.attributes.value = $el.context.value
   }
 
+  return deleteReactIdFromJson(json)
+}
+
+// remove React id, too transient
+function deleteReactIdFromJson (json) {
+  if (json.attributes) {
+    delete json.attributes['data-reactid']
+  }
+
+  if (Array.isArray(json.childNodes)) {
+    json.childNodes.forEach(deleteReactIdFromJson)
+  }
   return json
 }
 

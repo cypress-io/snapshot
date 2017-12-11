@@ -88,6 +88,18 @@ If you change the site values, the saved snapshot will no longer match, throwing
 
 ![Snapshot mismatch](img/snapshot-mismatch.png)
 
+### Options
+
+You can control snapshot comparison and behavior through a few options.
+
+```js
+cy.get(...).snapshot({
+  name: 'human snapshot name', // to use in the snapshot file
+  json: false                  // convert DOM elements into JSON
+                               // when storing in the snapshot file
+})
+```
+
 ## Debugging
 
 To debug this module run with environment variable `DEBUG=@cypress/snapshot`

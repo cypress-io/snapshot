@@ -5,11 +5,11 @@ const itsName = require('its-name')
 const { initStore } = require('snap-shot-store')
 const la = require('lazy-ass')
 const is = require('check-more-types')
-const switchcase = require('switchcase')
 const compare = require('snap-shot-compare')
 
 const {
   isJqueryElement,
+  serializeDomElement,
   serializeReactToHTML,
   identity,
   countSnapshots
@@ -130,23 +130,23 @@ function registerCypressSnapshot () {
     storeSnapshot({
       value,
       name,
-      // compare: compareValues,
       raiser: cyRaiser
     })
   }
 
-  const pickSerializer = switchcase({
-    // [isJqueryElement]: serializeDomElement,
-    [isJqueryElement]: serializeReactToHTML,
-    default: identity
-  })
+  const pickSerializer = (asJson, value) => {
+    if (isJqueryElement(value)) {
+      return asJson ? serializeDomElement : serializeReactToHTML
+    }
+    return identity
+  }
 
-  function snapshot (value, humanName) {
-    console.log('human name', humanName)
-    const snapshotName = getSnapshotName(this.test, humanName)
-    const serializer = pickSerializer(value)
+  function snapshot (value, { name, json } = {}) {
+    console.log('human name', name)
+    const snapshotName = getSnapshotName(this.test, name)
+    const serializer = pickSerializer(json, value)
     const serialized = serializer(value)
-    setSnapshot(snapshotName, serialized, value, humanName)
+    setSnapshot(snapshotName, serialized, value)
 
     // always just pass value
     return value
