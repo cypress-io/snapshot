@@ -2,7 +2,7 @@ const sd = require('@wildpeaks/snapshot-dom')
 const beautify = require('js-beautify').html
 
 function isJqueryElement (x) {
-  return x && typeof x !== 'string' && 'wrap' in x
+  return x && typeof x === 'object' && 'wrap' in x
 }
 
 // converts DOM element to a JSON object
