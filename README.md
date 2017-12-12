@@ -88,6 +88,8 @@ If you change the site values, the saved snapshot will no longer match, throwing
 
 ![Snapshot mismatch](img/snapshot-mismatch.png)
 
+Click on the `SNAPSHOT` step in the Command Log to see expected and current value printed in the DevTools.
+
 ### Options
 
 You can control snapshot comparison and behavior through a few options.
@@ -106,7 +108,7 @@ To debug this module run with environment variable `DEBUG=@cypress/snapshot`
 
 ### Small print
 
-Author: Gleb Bahmutov &lt;gleb@cypress.io&gt; &copy; 2017
+Author: Gleb Bahmutov &lt;gleb@cypress.io&gt; &copy; Cypress.io 2017
 
 License: MIT - do anything with the code, but don't blame u if it does not work.
 
