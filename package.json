@@ -64,7 +64,7 @@
     "unit": "mocha src/*-spec.js",
     "unused-deps": "dependency-check --unused --no-dev . --entry src/add-initial-snapshot-file.js",
     "postinstall": "node src/add-initial-snapshot-file.js",
-    "semantic-release": "semantic-release pre && npm publish && semantic-release post"
+    "semantic-release": "semantic-release pre && npm publish --access public && semantic-release post"
   },
   "release": {
     "analyzeCommits": "simple-commit-message",
