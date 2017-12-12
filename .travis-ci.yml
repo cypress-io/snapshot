@@ -1,0 +1,15 @@
+language: node_js
+notifications:
+  email: true
+node_js:
+  - 9
+
+# Retry install on fail to avoid failing a build on network/disk/external errors
+install:
+  - travis_retry npm install
+
+script:
+  - npm run test
+
+after_success:
+  - npm run semantic-release
