@@ -10,6 +10,7 @@ install:
 
 script:
   - npm run test
+  - npm run cypress:run
 
 after_success:
   - npm run semantic-release

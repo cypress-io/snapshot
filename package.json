@@ -64,7 +64,9 @@
     "unit": "mocha src/*-spec.js",
     "unused-deps": "dependency-check --unused --no-dev . --entry src/add-initial-snapshot-file.js",
     "postinstall": "node src/add-initial-snapshot-file.js",
-    "semantic-release": "semantic-release pre && npm publish --access public && semantic-release post"
+    "semantic-release": "semantic-release pre && npm publish --access public && semantic-release post",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
   },
   "release": {
     "analyzeCommits": "simple-commit-message",
@@ -72,6 +74,7 @@
   },
   "devDependencies": {
     "ban-sensitive-files": "1.9.2",
+    "cypress": "1.1.4",
     "debug": "3.1.0",
     "dependency-check": "2.9.1",
     "deps-ok": "1.2.1",
