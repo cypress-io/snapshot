@@ -8,7 +8,6 @@ const is = require('check-more-types')
 const compare = require('snap-shot-compare')
 
 const {
-  isJqueryElement,
   serializeDomElement,
   serializeReactToHTML,
   identity,
@@ -93,7 +92,7 @@ function registerCypressSnapshot () {
     const devToolsLog = {
       value
     }
-    if (isJqueryElement($el)) {
+    if (Cypress.dom.isJquery($el)) {
       // only add DOM elements, otherwise "expected" value is enough
       devToolsLog.$el = $el
     }
@@ -134,7 +133,7 @@ function registerCypressSnapshot () {
   }
 
   const pickSerializer = (asJson, value) => {
-    if (isJqueryElement(value)) {
+    if (Cypress.dom.isJquery(value)) {
       return asJson ? serializeDomElement : serializeReactToHTML
     }
     return identity

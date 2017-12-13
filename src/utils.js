@@ -1,10 +1,6 @@
 const sd = require('@wildpeaks/snapshot-dom')
 const beautify = require('js-beautify').html
 
-function isJqueryElement (x) {
-  return x && typeof x === 'object' && 'wrap' in x
-}
-
 // converts DOM element to a JSON object
 function serializeDomElement ($el) {
   // console.log('snapshot value!', $el)
@@ -61,6 +57,5 @@ module.exports = {
   serializeDomElement,
   serializeReactToHTML,
   identity,
-  countSnapshots,
-  isJqueryElement
+  countSnapshots
 }
