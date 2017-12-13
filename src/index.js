@@ -59,8 +59,7 @@ function registerCypressSnapshot () {
     storeSnapshot = initStore(store)
   }
 
-  global.before(() => {
-    cy.log('before all tests')
+  global.before(function loadSnapshots () {
     cy
     .readFile(SNAPSHOT_FILENAME, 'utf-8', { log: false })
     .then(evaluateLoadedSnapShots)
@@ -154,9 +153,8 @@ function registerCypressSnapshot () {
 
   Cypress.Commands.add('snapshot', { prevSubject: true }, snapshot)
 
-  global.after(() => {
+  global.after(function saveSnapshots () {
     if (storeSnapshot) {
-      cy.log('saving snapshots')
       const snapshots = storeSnapshot()
       console.log('%d snapshot(s) on finish', countSnapshots(snapshots))
       console.log(snapshots)
@@ -167,6 +165,10 @@ function registerCypressSnapshot () {
       cy.writeFile(SNAPSHOT_FILENAME, str, 'utf-8', { log: false })
     }
   })
+
+  return snapshot
 }
 
-module.exports = registerCypressSnapshot
+module.exports = {
+  register: registerCypressSnapshot
+}

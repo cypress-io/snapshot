@@ -20,7 +20,7 @@ npm install --save-dev @cypress/snapshot
 After installing, add the following to your `cypress/support/commands.js` file
 
 ```js
-require('@cypress/snapshot')()
+require('@cypress/snapshot').register()
 ```
 
 This registers a new command to create new snapshot or compare value to old snapshot

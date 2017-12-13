@@ -1,2 +1,2 @@
 // register .snapshot() command
-require('../..')()
+require('../..').register()
