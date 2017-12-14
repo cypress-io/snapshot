@@ -73,6 +73,7 @@
     "generateNotes": "github-post-release"
   },
   "devDependencies": {
+    "@bahmutov/add-typescript-to-cypress": "1.0.3",
     "ban-sensitive-files": "1.9.2",
     "cypress": "1.1.4",
     "debug": "3.1.0",
@@ -86,7 +87,8 @@
     "mocha": "4.0.1",
     "nsp": "3.1.0",
     "pre-git": "3.16.0",
-    "semantic-release": "^8.2.0"
+    "semantic-release": "^8.2.0",
+    "typescript": "2.6.2"
   },
   "dependencies": {
     "@wildpeaks/snapshot-dom": "1.2.1",
