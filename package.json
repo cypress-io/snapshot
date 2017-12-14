@@ -74,6 +74,7 @@
   },
   "devDependencies": {
     "@bahmutov/add-typescript-to-cypress": "1.0.3",
+    "@types/mocha": "2.2.44",
     "ban-sensitive-files": "1.9.2",
     "cypress": "1.1.4",
     "debug": "3.1.0",
