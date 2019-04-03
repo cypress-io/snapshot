@@ -6,6 +6,7 @@ const { initStore } = require('snap-shot-store')
 const la = require('lazy-ass')
 const is = require('check-more-types')
 const compare = require('snap-shot-compare')
+const path = require('path')
 
 const {
   serializeDomElement,
@@ -13,6 +14,14 @@ const {
   identity,
   countSnapshots
 } = require('./utils')
+
+const DEFAULT_CONFIG = {
+  // using relative snapshots requires a simple
+  // 'readFileMaybe' plugin to be configured
+  // see https://on.cypress.io/task#Read-a-file-that-might-not-exist
+  useRelativeSnapshots: false,
+  snapshotFileName: 'snapshots.js'
+}
 
 /* eslint-disable no-console */
 
@@ -22,10 +31,12 @@ function compareValues ({ expected, value }) {
   return compare({ expected, value, noColor, json })
 }
 
-function registerCypressSnapshot () {
+function registerCypressSnapshot (config) {
   la(is.fn(global.before), 'missing global before function')
   la(is.fn(global.after), 'missing global after function')
   la(is.object(global.Cypress), 'missing Cypress object')
+
+  config = Object.assign(DEFAULT_CONFIG, config)
 
   console.log('registering @cypress/snapshot')
 
@@ -48,7 +59,15 @@ function registerCypressSnapshot () {
     return counters[key]
   }
 
-  const SNAPSHOT_FILENAME = 'snapshots.js'
+  let snapshotFileName = config.snapshotFileName
+  if (config.useRelativeSnapshots) {
+    let relative = Cypress.spec.relative
+    if (Cypress.platform === 'win32') {
+      relative = relative.replace(/\\/g, path.sep)
+    }
+
+    snapshotFileName = path.join(path.dirname(relative), config.snapshotFileName)
+  }
 
   function evaluateLoadedSnapShots (js) {
     la(is.string(js), 'expected JavaScript snapshot source', js)
@@ -59,9 +78,24 @@ function registerCypressSnapshot () {
   }
 
   global.before(function loadSnapshots () {
-    cy
-    .readFile(SNAPSHOT_FILENAME, 'utf-8', { log: false })
-    .then(evaluateLoadedSnapShots)
+    let readFile
+
+    if (config.useRelativeSnapshots) {
+      readFile = cy
+      .task('readFileMaybe', snapshotFileName)
+      .then(function (contents) {
+        if (!contents) {
+          return cy.writeFile(snapshotFileName, '', 'utf-8', { log: false })
+        }
+
+        return contents
+      })
+    } else {
+      readFile = cy
+      .readFile(snapshotFileName, 'utf-8')
+    }
+
+    readFile.then(evaluateLoadedSnapShots)
     // no way to catch an error yet
   })
 
@@ -161,7 +195,7 @@ function registerCypressSnapshot () {
       snapshots.__version = Cypress.version
       const s = JSON.stringify(snapshots, null, 2)
       const str = `module.exports = ${s}\n`
-      cy.writeFile(SNAPSHOT_FILENAME, str, 'utf-8', { log: false })
+      cy.writeFile(snapshotFileName, str, 'utf-8', { log: false })
     }
   })
 

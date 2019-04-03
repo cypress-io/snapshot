@@ -95,6 +95,7 @@
     "its-name": "1.0.0",
     "js-beautify": "1.7.5",
     "lazy-ass": "1.6.0",
+    "path": "0.12.7",
     "snap-shot-compare": "2.7.1",
     "snap-shot-store": "1.2.3"
   }
