@@ -116,15 +116,8 @@ than at the base working directory.
 Set to a string to name your snapshot something other than 'snapshots.js'
 
 #### Usage
-To set a configuration, pass it as an arg to the `.regsiter()` call:
-```js
-var config = {
-  snapshotFileName: 'cypress-snapshots.js',
-  useRelativeSnapshots: true
-}
-  
-require("@cypress/snapshot").register(config);
-```
+Set the configuration options as part of the Cypress config.
+See https://docs.cypress.io/guides/references/configuration.html
 
 ## Debugging
 

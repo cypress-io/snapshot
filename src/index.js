@@ -15,7 +15,7 @@ const {
   countSnapshots
 } = require('./utils')
 
-const DEFAULT_CONFIG = {
+const DEFAULT_CONFIG_OPTIONS = {
   // using relative snapshots requires a simple
   // 'readFileMaybe' plugin to be configured
   // see https://on.cypress.io/task#Read-a-file-that-might-not-exist
@@ -31,12 +31,16 @@ function compareValues ({ expected, value }) {
   return compare({ expected, value, noColor, json })
 }
 
-function registerCypressSnapshot (config) {
+function registerCypressSnapshot () {
   la(is.fn(global.before), 'missing global before function')
   la(is.fn(global.after), 'missing global after function')
   la(is.object(global.Cypress), 'missing Cypress object')
 
-  config = Object.assign(DEFAULT_CONFIG, config)
+  const useRelative = Cypress.config("useRelativeSnapshots");
+  config = {
+    useRelativeSnapshots: useRelative === undefined ? DEFAULT_CONFIG_OPTIONS.useRelativeSnapshots : useRelative,
+    snapshotFileName: Cypress.config("snapshotFileName") || DEFAULT_CONFIG_OPTIONS.snapshotFileName
+  }
 
   console.log('registering @cypress/snapshot')
 
