@@ -120,7 +120,7 @@ function registerCypressSnapshot () {
         devToolsLog.expected = expected
         delete devToolsLog.value
         devToolsLog.value = value
-        throw new Error(`Snapshot difference\n${json.message}`)
+        throw new Error(`Snapshot difference. To update, delete snapshot and rerun test.\n${json.message}`)
       })
     }
 
