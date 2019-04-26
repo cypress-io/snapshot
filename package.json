@@ -83,7 +83,7 @@
     "license-checker": "15.0.0",
     "mocha": "4.0.1",
     "pre-git": "3.16.0",
-    "semantic-release": "^8.2.0"
+    "semantic-release": "8.2.3"
   },
   "dependencies": {
     "@wildpeaks/snapshot-dom": "1.2.1",
