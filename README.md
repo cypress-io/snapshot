@@ -6,6 +6,7 @@
 
 [![Build status][ci-image] ][ci-url]
 [![semantic-release][semantic-image] ][semantic-url]
+[![renovate-app badge][renovate-badge]][renovate-app]
 
 ## Install
 
@@ -47,7 +48,7 @@ describe('focused input field', () => {
 })
 ```
 
-The snapshot object can be found in file `snapshots.js`. In the above case it would look something like this
+By default, the snapshot object can be found in file `snapshots.js`. In the above case it would look something like this
 
 ```js
 module.exports = {
@@ -102,6 +103,23 @@ cy.get(...).snapshot({
 })
 ```
 
+### Configuration
+
+This module provides some configuration options:
+
+#### useRelativeSnapshots
+Set to true in order to store your snapshots for each test run next to the inital test caller rather
+than at the base working directory.
+
+**Note:** requires the `readFileMaybe` plugin to be configured see https://on.cypress.io/task#Read-a-file-that-might-not-exist
+
+#### snapshotFileName
+Set to a string to name your snapshot something other than 'snapshots.js'
+
+#### Usage
+Set the configuration options as part of the Cypress config.
+See https://docs.cypress.io/guides/references/configuration.html
+
 ## Debugging
 
 To debug this module run with environment variable `DEBUG=@cypress/snapshot`
@@ -146,3 +164,5 @@ OTHER DEALINGS IN THE SOFTWARE.
 [ci-url]: https://travis-ci.org/cypress-io/snapshot
 [semantic-image]: https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg
 [semantic-url]: https://github.com/semantic-release/semantic-release
+[renovate-badge]: https://img.shields.io/badge/renovate-app-blue.svg
+[renovate-app]: https://renovateapp.com/
