@@ -48,7 +48,7 @@ describe('focused input field', () => {
 })
 ```
 
-The snapshot object can be found in file `snapshots.js`. In the above case it would look something like this
+By default, the snapshot object can be found in file `snapshots.js`. In the above case it would look something like this
 
 ```js
 module.exports = {
@@ -102,6 +102,23 @@ cy.get(...).snapshot({
                                // when storing in the snapshot file
 })
 ```
+
+### Configuration
+
+This module provides some configuration options:
+
+#### useRelativeSnapshots
+Set to true in order to store your snapshots for each test run next to the inital test caller rather
+than at the base working directory.
+
+**Note:** requires the `readFileMaybe` plugin to be configured see https://on.cypress.io/task#Read-a-file-that-might-not-exist
+
+#### snapshotFileName
+Set to a string to name your snapshot something other than 'snapshots.js'
+
+#### Usage
+Set the configuration options as part of the Cypress config.
+See https://docs.cypress.io/guides/references/configuration.html
 
 ## Debugging
 
