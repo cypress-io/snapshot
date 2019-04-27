@@ -82,7 +82,7 @@
     "github-post-release": "1.13.1",
     "license-checker": "15.0.0",
     "mocha": "4.1.0",
-    "pre-git": "3.16.0",
+    "pre-git": "3.17.1",
     "semantic-release": "8.2.3"
   },
   "dependencies": {
