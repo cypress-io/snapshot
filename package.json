@@ -62,7 +62,7 @@
     "unit": "mocha src/*-spec.js",
     "unused-deps": "dependency-check --unused --no-dev . --entry src/add-initial-snapshot-file.js",
     "postinstall": "node src/add-initial-snapshot-file.js",
-    "semantic-release": "semantic-release pre && npm publish --access public && semantic-release post",
+    "semantic-release": "semantic-release",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run"
   },
@@ -83,7 +83,7 @@
     "license-checker": "15.0.0",
     "mocha": "4.1.0",
     "pre-git": "3.17.1",
-    "semantic-release": "8.2.3"
+    "semantic-release": "^15.13.3"
   },
   "dependencies": {
     "@wildpeaks/snapshot-dom": "1.2.1",
