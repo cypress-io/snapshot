@@ -4,26 +4,6 @@
   "version": "0.0.0-development",
   "author": "Gleb Bahmutov <gleb@cypress.io>",
   "bugs": "https://github.com/cypress-io/snapshot/issues",
-  "config": {
-    "pre-git": {
-      "commit-msg": "simple",
-      "pre-commit": [
-        "npm prune",
-        "npm run deps",
-        "npm test",
-        "git add src/*.js",
-        "npm run ban"
-      ],
-      "pre-push": [
-        "npm run unused-deps",
-        "npm run license",
-        "npm run ban -- --all",
-        "npm run size"
-      ],
-      "post-commit": [],
-      "post-merge": []
-    }
-  },
   "engines": {
     "node": ">=6"
   },
@@ -66,10 +46,6 @@
     "cypress:open": "cypress open",
     "cypress:run": "cypress run"
   },
-  "release": {
-    "analyzeCommits": "simple-commit-message",
-    "generateNotes": "github-post-release"
-  },
   "devDependencies": {
     "ban-sensitive-files": "1.9.2",
     "cypress": "1.4.2",
@@ -82,7 +58,6 @@
     "github-post-release": "1.13.1",
     "license-checker": "15.0.0",
     "mocha": "4.1.0",
-    "pre-git": "3.17.1",
     "semantic-release": "15.13.3"
   },
   "dependencies": {
