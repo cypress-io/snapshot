@@ -36,10 +36,10 @@ function registerCypressSnapshot () {
   la(is.fn(global.after), 'missing global after function')
   la(is.object(global.Cypress), 'missing Cypress object')
 
-  const useRelative = Cypress.config("useRelativeSnapshots")
+  const useRelative = Cypress.config('useRelativeSnapshots')
   const config = {
     useRelativeSnapshots: useRelative === undefined ? DEFAULT_CONFIG_OPTIONS.useRelativeSnapshots : useRelative,
-    snapshotFileName: Cypress.config("snapshotFileName") || DEFAULT_CONFIG_OPTIONS.snapshotFileName
+    snapshotFileName: Cypress.config('snapshotFileName') || DEFAULT_CONFIG_OPTIONS.snapshotFileName
   }
 
   console.log('registering @cypress/snapshot')
