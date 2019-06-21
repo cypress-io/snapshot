@@ -10,7 +10,7 @@ const path = require('path')
 
 const {
   serializeDomElement,
-  serializeReactToHTML,
+  serializeToHTML,
   identity,
   countSnapshots
 } = require('./utils')
@@ -172,7 +172,7 @@ function registerCypressSnapshot () {
 
   const pickSerializer = (asJson, value) => {
     if (Cypress.dom.isJquery(value)) {
-      return asJson ? serializeDomElement : serializeReactToHTML
+      return asJson ? serializeDomElement : serializeToHTML
     }
     return identity
   }
