@@ -60,7 +60,7 @@
     "semantic-release": "15.14.0"
   },
   "dependencies": {
-    "@wildpeaks/snapshot-dom": "1.4.0",
+    "@wildpeaks/snapshot-dom": "1.6.0",
     "am-i-a-dependency": "1.1.2",
     "check-more-types": "2.24.0",
     "its-name": "1.0.0",
