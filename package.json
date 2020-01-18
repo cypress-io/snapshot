@@ -48,7 +48,7 @@
   },
   "devDependencies": {
     "ban-sensitive-files": "1.9.2",
-    "cypress": "3.8.1",
+    "cypress": "3.8.2",
     "debug": "3.2.6",
     "dependency-check": "2.10.1",
     "deps-ok": "1.4.1",
