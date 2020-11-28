@@ -8,6 +8,10 @@
 [![semantic-release][semantic-image] ][semantic-url]
 [![renovate-app badge][renovate-badge]][renovate-app]
 
+## Note
+
+Please take a look at a few other Cypress snapshot plugins: [cypress-plugin-snapshots](https://github.com/meinaart/cypress-plugin-snapshots), [cypress-image-snapshot](https://github.com/palmerhq/cypress-image-snapshot).
+
 ## Install
 
 Requires [Node](https://nodejs.org/en/) version 6 or above.
