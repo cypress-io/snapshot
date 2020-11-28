@@ -3,16 +3,26 @@ const beautify = require('js-beautify').html
 
 // converts DOM element to a JSON object
 function serializeDomElement ($el) {
-  // console.log('snapshot value!', $el)
-  const json = sd.toJSON($el[0])
-  // console.log('as json', json)
+  let serialized = []
 
-  // hmm, why is value not serialized?
-  if ($el.context.value && !json.attributes.value) {
-    json.attributes.value = $el.context.value
+  $el.each(function (index, element) {
+    // console.log('snapshot value!', $el)
+    const json = sd.toJSON(element)
+    // console.log('as json', json)
+
+    // hmm, why is value not serialized?
+    if ($el.context.value && !json.attributes.value) {
+      json.attributes.value = $el.context.value
+    }
+
+    serialized.push(deleteReactIdFromJson(json))
+  })
+
+  if (serialized.length === 1) {
+    return serialized[0]
+  } else {
+    return serialized
   }
-
-  return deleteReactIdFromJson(json)
 }
 
 // remove React id, too transient
@@ -32,8 +42,13 @@ const stripReactIdAttributes = (html) => {
   return html.replace(dataReactId, '')
 }
 
-const serializeReactToHTML = (el$) => {
-  const html = el$[0].outerHTML
+const serializeReactToHTML = ($el) => {
+  let html = ''
+
+  $el.each(function (index, element) {
+    html += element.outerHTML
+  })
+
   const stripped = stripReactIdAttributes(html)
   const options = {
     wrap_line_length: 80,
