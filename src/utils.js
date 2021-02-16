@@ -12,29 +12,36 @@ function serializeDomElement ($el) {
     json.attributes.value = $el.context.value
   }
 
-  return deleteReactIdFromJson(json)
+  return deleteTransientIdsFromJson(json)
 }
 
-// remove React id, too transient
-function deleteReactIdFromJson (json) {
+// remove React and Angular ids, which are transient
+function deleteTransientIdsFromJson(json) {
   if (json.attributes) {
     delete json.attributes['data-reactid']
+
+    Object.keys(json.attributes)
+      .filter(key => key.startsWith('_ng'))
+      .forEach(attr => delete json.attributes[attr])
+    delete json.attributes['']
   }
 
   if (Array.isArray(json.childNodes)) {
-    json.childNodes.forEach(deleteReactIdFromJson)
+    json.childNodes.forEach(deleteTransientIdsFromJson)
   }
   return json
 }
 
-const stripReactIdAttributes = (html) => {
+const stripTransientIdAttributes = (html) => {
   const dataReactId = /data\-reactid="[\.\d\$\-abcdfef]+"/g
+  const angularId = /_ng(content|host)\-[0-9a-z-]+(="")?/g
   return html.replace(dataReactId, '')
+    .replace(angularId, '')
 }
 
-const serializeReactToHTML = (el$) => {
+const serializeToHTML = (el$) => {
   const html = el$[0].outerHTML
-  const stripped = stripReactIdAttributes(html)
+  const stripped = stripTransientIdAttributes(html)
   const options = {
     wrap_line_length: 80,
     indent_inner_html: true,
@@ -55,7 +62,7 @@ const countSnapshots = (snapshots) =>
 module.exports = {
   SNAPSHOT_FILE_NAME: 'snapshots.js',
   serializeDomElement,
-  serializeReactToHTML,
+  serializeToHTML,
   identity,
   countSnapshots
 }
