@@ -47,7 +47,7 @@
     "cypress:run": "cypress run"
   },
   "devDependencies": {
-    "ban-sensitive-files": "1.9.2",
+    "ban-sensitive-files": "1.9.15",
     "cypress": "3.8.2",
     "debug": "3.2.6",
     "dependency-check": "2.10.1",
