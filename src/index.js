@@ -74,9 +74,13 @@ function registerCypressSnapshot () {
   }
 
   function evaluateLoadedSnapShots (js) {
-    la(is.string(js), 'expected JavaScript snapshot source', js)
-    console.log('read snapshots.js file')
-    const store = eval(js) || {}
+    let store = {}
+    if (js != null) {
+      la(is.string(js), 'expected JavaScript snapshot source', js)
+      console.log('read snapshots.js file')
+      store = eval(js) || {}
+      console.log('have %d snapshot(s)', countSnapshots(store))
+    }
     console.log('have %d snapshot(s)', countSnapshots(store))
     storeSnapshot = initStore(store)
   }
@@ -87,13 +91,6 @@ function registerCypressSnapshot () {
     if (config.useRelativeSnapshots) {
       readFile = cy
       .task('readFileMaybe', snapshotFileName)
-      .then(function (contents) {
-        if (!contents) {
-          return cy.writeFile(snapshotFileName, '', 'utf-8', { log: false })
-        }
-
-        return contents
-      })
     } else {
       readFile = cy
       .readFile(snapshotFileName, 'utf-8')
@@ -193,13 +190,16 @@ function registerCypressSnapshot () {
   global.after(function saveSnapshots () {
     if (storeSnapshot) {
       const snapshots = storeSnapshot()
-      console.log('%d snapshot(s) on finish', countSnapshots(snapshots))
+      const count = countSnapshots(snapshots)
+      console.log('%d snapshot(s) on finish', count)
       console.log(snapshots)
 
-      snapshots.__version = Cypress.version
-      const s = JSON.stringify(snapshots, null, 2)
-      const str = `module.exports = ${s}\n`
-      cy.writeFile(snapshotFileName, str, 'utf-8', { log: false })
+      if (count) {
+        snapshots.__version = Cypress.version
+        const s = JSON.stringify(snapshots, null, 2)
+        const str = `module.exports = ${s}\n`
+        cy.writeFile(snapshotFileName, str, 'utf-8', { log: false })
+      }
     }
   })
 
