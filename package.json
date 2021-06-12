@@ -50,7 +50,7 @@
     "ban-sensitive-files": "1.9.15",
     "cypress": "3.8.3",
     "debug": "3.2.7",
-    "dependency-check": "2.10.1",
+    "dependency-check": "3.4.1",
     "deps-ok": "1.4.1",
     "eslint": "4.19.1",
     "eslint-plugin-cypress-dev": "1.1.2",
