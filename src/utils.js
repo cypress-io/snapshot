@@ -35,8 +35,10 @@ function deleteTransientIdsFromJson(json) {
 const stripTransientIdAttributes = (html) => {
   const dataReactId = /data\-reactid="[\.\d\$\-abcdfef]+"/g
   const angularId = /_ng(content|host)\-[0-9a-z-]+(="")?/g
+  const vueId = /data-v-[A-z0-9]+=/g
   return html.replace(dataReactId, '')
     .replace(angularId, '')
+    .replace(vueId, '')
 }
 
 const serializeToHTML = (el$) => {
