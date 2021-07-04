@@ -49,7 +49,7 @@
   "devDependencies": {
     "ban-sensitive-files": "1.9.15",
     "cypress": "3.8.3",
-    "debug": "3.2.7",
+    "debug": "4.3.2",
     "dependency-check": "2.10.1",
     "deps-ok": "1.4.1",
     "eslint": "4.19.1",
