@@ -89,7 +89,8 @@ function registerCypressSnapshot () {
       .task('readFileMaybe', snapshotFileName)
       .then(function (contents) {
         if (!contents) {
-          return cy.writeFile(snapshotFileName, '', 'utf-8', { log: false })
+          cy.writeFile(snapshotFileName, '', 'utf-8', { log: false })
+          return cy.wrap('')
         }
 
         return contents
