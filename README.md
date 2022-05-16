@@ -45,9 +45,9 @@ describe('focused input field', () => {
     cy.visit('http://todomvc.com/examples/react/')
     cy
       .focused()
-      .snapshot('initial')
+      .snapshot({ name: 'initial' })
       .type('eat healthy breakfast')
-      .snapshot('after typing')
+      .snapshot({ name: 'after typing' })
   })
 })
 ```
